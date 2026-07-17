@@ -1014,5 +1014,39 @@ html[data-theme="light"] .theme-toggle:hover{color:#0f172a;border-color:#cbd5e1;
             }
         })();
     </script>
+
+    <!-- Analytics: GoatCounter (privacy-friendly, no cookies) -->
+    <script data-goatcounter="https://phalla-song.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <script>
+        (function () {
+            'use strict';
+            function gcEvent(path, title) {
+                if (window.goatcounter && window.goatcounter.count) {
+                    window.goatcounter.count({ path: path, title: title || path, event: true });
+                }
+            }
+            // CV downloads
+            document.querySelectorAll('a[download]').forEach(function (a) {
+                a.addEventListener('click', function () { gcEvent('cv-download', 'CV downloaded'); });
+            });
+            // Tagged visits: share links like ?ref=company-name to see who's viewing
+            var ref = new URLSearchParams(window.location.search).get('ref');
+            if (ref) {
+                ref = ref.toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40);
+                if (ref) {
+                    var tries = 0;
+                    var t = setInterval(function () {
+                        tries++;
+                        if (window.goatcounter && window.goatcounter.count) {
+                            clearInterval(t);
+                            gcEvent('ref-' + ref, 'Visit via ' + ref);
+                        } else if (tries > 25) {
+                            clearInterval(t);
+                        }
+                    }, 400);
+                }
+            }
+        })();
+    </script>
 </body>
 </html>
